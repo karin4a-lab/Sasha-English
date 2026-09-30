@@ -9,18 +9,104 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="topbar"><div><div class="eyebrow">Саша • English</div><h1>Учим слова</h1></div><div class="streak" id="streak">0 ⭐</div></header>
+  <header class="topbar">
+    <div><div class="eyebrow">Саша • English</div><h1>Учим слова</h1></div>
+    <div class="streak" id="streak">0 ⭐</div>
+  </header>
+
   <main class="wrap">
-    <section id="homeView"><div class="hero"><div><h2>Выбери тему</h2><p>5–10 минут в день: карточки, произношение и мини‑тест.</p></div><div class="hero-badge">A1</div></div><div id="topicGrid" class="topic-grid"></div></section>
+    <section id="homeView">
+      <div class="daily-card">
+        <div>
+          <div class="eyebrow light">Сегодня</div>
+          <div class="daily-time" id="dailyTime">00:00 / 10:00</div>
+          <div class="daily-note" id="dailyNote">Минимум 10 минут английского в день</div>
+        </div>
+        <div class="daily-ring" id="dailyRing"><span id="dailyPercent">0%</span></div>
+      </div>
+
+      <div class="library-tabs" id="libraryTabs">
+        <button class="library-tab active" data-filter="all">Все слова <span id="allCount">0</span></button>
+        <button class="library-tab" data-filter="reinforce">Закрепить <span id="reinforceCount">0</span></button>
+        <button class="library-tab" data-filter="learned">Выучено <span id="learnedCount">0</span></button>
+      </div>
+
+      <button class="practice-card" id="practiceSelected">
+        <div class="practice-icon" id="practiceIcon">🔤</div>
+        <div class="practice-copy">
+          <div class="practice-title" id="practiceTitle">Повторить все слова</div>
+          <div class="practice-sub" id="practiceSub">Все слова подряд</div>
+        </div>
+        <div class="practice-arrow">›</div>
+      </button>
+
+      <div class="section-head"><h2>Темы</h2><span>Можно заниматься отдельно</span></div>
+      <div id="topicGrid" class="topic-grid"></div>
+    </section>
+
     <section id="studyView" class="hidden">
-      <button class="back" id="backBtn">← Темы</button>
-      <div class="study-head"><div><div class="eyebrow" id="topicType"></div><h2 id="topicTitle"></h2></div><div class="progress-pill" id="progressPill"></div></div>
-      <div class="mode-tabs"><button class="mode active" data-mode="cards">Карточки</button><button class="mode" data-mode="quiz">Тест</button><button class="mode" data-mode="typing">Написание</button></div>
-      <div id="cardsMode"><div class="flashcard"><div class="card-visual" id="cardVisual"></div><div class="word" id="word"></div><div class="translation" id="translation"></div><button class="sound" id="soundBtn">🔊 Послушать</button></div><div class="card-actions"><button class="secondary" id="againBtn">Повторить</button><button class="primary" id="knowBtn">Знаю ✓</button></div><div class="counter" id="counter"></div></div>
-      <div id="quizMode" class="hidden"><div class="quiz-card"><div class="quiz-label">Как переводится?</div><div class="quiz-word" id="quizWord"></div><button class="sound compact" id="quizSoundBtn">🔊</button><div id="quizOptions" class="options"></div><div id="quizFeedback" class="feedback"></div><button class="primary full hidden" id="nextQuizBtn">Дальше</button></div></div>
-      <div id="typingMode" class="hidden"><div class="quiz-card"><div class="quiz-label">Напиши по‑английски</div><div class="quiz-word ru" id="typingPrompt"></div><input id="typingInput" class="typing-input" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="English word"><button class="primary full" id="checkTypingBtn">Проверить</button><div id="typingFeedback" class="feedback"></div><button class="secondary full hidden" id="nextTypingBtn">Следующее слово</button></div></div>
+      <button class="back" id="backBtn">← Назад</button>
+      <div class="study-head">
+        <div><div class="eyebrow" id="topicType"></div><h2 id="topicTitle"></h2></div>
+        <div class="progress-pill" id="progressPill"></div>
+      </div>
+      <div class="session-line"><span>Сегодня</span><strong id="studyDailyTime">00:00 / 10:00</strong></div>
+
+      <div class="mode-tabs">
+        <button class="mode active" data-mode="cards">Карточки</button>
+        <button class="mode" data-mode="quiz">Тест</button>
+        <button class="mode" data-mode="typing">Написание</button>
+      </div>
+
+      <div id="emptyState" class="empty-state hidden">
+        <div class="empty-icon">✓</div>
+        <h3 id="emptyTitle">Здесь пока пусто</h3>
+        <p id="emptyText"></p>
+        <button class="primary full" id="emptyBackBtn">К словам</button>
+      </div>
+
+      <div id="studyContent">
+        <div id="cardsMode">
+          <div class="flashcard">
+            <div class="status-chip" id="wordStatus">Новое</div>
+            <div class="card-visual" id="cardVisual"></div>
+            <div class="word" id="word"></div>
+            <div class="translation" id="translation"></div>
+            <button class="sound" id="soundBtn">🔊 Послушать</button>
+          </div>
+          <div class="card-actions">
+            <button class="secondary danger-soft" id="againBtn">Не знаю</button>
+            <button class="primary" id="knowBtn">Знаю ✓</button>
+          </div>
+          <div class="counter" id="counter"></div>
+        </div>
+
+        <div id="quizMode" class="hidden">
+          <div class="quiz-card">
+            <div class="quiz-label">Как переводится?</div>
+            <div class="quiz-word" id="quizWord"></div>
+            <button class="sound compact" id="quizSoundBtn">🔊</button>
+            <div id="quizOptions" class="options"></div>
+            <div id="quizFeedback" class="feedback"></div>
+            <button class="primary full hidden" id="nextQuizBtn">Дальше</button>
+          </div>
+        </div>
+
+        <div id="typingMode" class="hidden">
+          <div class="quiz-card">
+            <div class="quiz-label">Напиши по-английски</div>
+            <div class="quiz-word ru" id="typingPrompt"></div>
+            <input id="typingInput" class="typing-input" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="English word">
+            <button class="primary full" id="checkTypingBtn">Проверить</button>
+            <div id="typingFeedback" class="feedback"></div>
+            <button class="secondary full hidden" id="nextTypingBtn">Следующее слово</button>
+          </div>
+        </div>
+      </div>
     </section>
   </main>
-  <script src="data.js"></script><script src="app.js"></script>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
