@@ -1,1 +1,27 @@
-const CACHE="sasha-english-v2";const FILES=["./","index.html","styles.css","data.js","app.js","manifest.webmanifest"];self.addEventListener("install",e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES)))});self.addEventListener("activate",e=>e.waitUntil(Promise.all([caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))),self.clients.claim()])));self.addEventListener("fetch",e=>e.respondWith(fetch(e.request).then(r=>{const copy=r.clone();caches.open(CACHE).then(c=>c.put(e.request,copy));return r}).catch(()=>caches.match(e.request))));
+const CACHE="sasha-english-v4";
+const FILES=["./?v=4","index.html?v=4","styles.css?v=4","data.js?v=4","app.js?v=4","manifest.webmanifest?v=4"];
+self.addEventListener("install",event=>{
+  self.skipWaiting();
+  event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(FILES)));
+});
+self.addEventListener("activate",event=>{
+  event.waitUntil(
+    caches.keys()
+      .then(keys=>Promise.all(keys.filter(key=>key!==CACHE).map(key=>caches.delete(key))))
+      .then(()=>self.clients.claim())
+  );
+});
+self.addEventListener("fetch",event=>{
+  if(event.request.method!=="GET")return;
+  event.respondWith(
+    fetch(event.request,{cache:"no-store"})
+      .then(response=>{
+        if(response&&response.ok){
+          const copy=response.clone();
+          caches.open(CACHE).then(cache=>cache.put(event.request,copy));
+        }
+        return response;
+      })
+      .catch(()=>caches.match(event.request))
+  );
+});
