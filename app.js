@@ -1,167 +1,46 @@
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
-const PROGRESS_KEY="sashaEnglishProgressV2",OLD_KEY="sashaEnglishProgressV1",DAY_KEY="sashaEnglishDailyV1";
-const SESSION_ID=Date.now().toString(36)+Math.random().toString(36).slice(2);
-let progress=JSON.parse(localStorage.getItem(PROGRESS_KEY)||"{}");
-let daily=JSON.parse(localStorage.getItem(DAY_KEY)||"{}");
-let currentLesson=null,currentWords=[],currentSource="all",cardIndex=0,quizItem=null,typingItem=null;
-
+const PROGRESS_KEY='sashaEnglishProgressV3',OLD_KEY='sashaEnglishProgressV2',DAY_KEY='sashaEnglishDailyV1';
+let progress=JSON.parse(localStorage.getItem(PROGRESS_KEY)||'{}'),daily=JSON.parse(localStorage.getItem(DAY_KEY)||'{}');
+let currentLesson=null,currentWords=[],currentSource='all',cardIndex=0,quizItem=null,buildItem=null,buildState=null;
+const todayKey=()=>new Date().toLocaleDateString('sv-SE');
 const allWords=()=>LESSONS.flatMap(l=>l.words.map(w=>({...w,lessonId:l.id,lessonTitle:l.title})));
 const wordKey=w=>`${w.lessonId}::${w.en}`;
-const todayKey=()=>new Date().toLocaleDateString("sv-SE");
-
-function migrateOld(){
-  if(Object.keys(progress).length)return;
-  const old=JSON.parse(localStorage.getItem(OLD_KEY)||"{}");
-  if(!old||!Object.keys(old).length)return;
-  allWords().forEach(w=>{
-    const v=old[w.lessonId]?.[w.en];
-    if(v===true)progress[wordKey(w)]={status:"learned",correct:3,correctSessions:["legacy1","legacy2"],wrong:0};
-    if(v===false)progress[wordKey(w)]={status:"reinforce",correct:0,correctSessions:[],wrong:1};
-  });
-  saveProgress();
-}
-function getRec(w){return progress[wordKey(w)]||{status:"new",correct:0,correctSessions:[],wrong:0}}
+const baseRec=()=>({status:'new',quizCorrect:0,buildCorrect:0,days:[],wrong:0});
+function migrate(){if(Object.keys(progress).length)return;const old=JSON.parse(localStorage.getItem(OLD_KEY)||'{}');if(!old)return;for(const w of allWords()){const r=old[wordKey(w)];if(!r)continue;progress[wordKey(w)]={status:r.status==='learned'?'reinforce':(r.status||'new'),quizCorrect:0,buildCorrect:0,days:[],wrong:r.wrong||0};}saveProgress()}
+function getRec(w){return progress[wordKey(w)]||baseRec()}
+function ensureRec(w){const k=wordKey(w);if(!progress[k])progress[k]=baseRec();return progress[k]}
 function saveProgress(){localStorage.setItem(PROGRESS_KEY,JSON.stringify(progress))}
 function saveDaily(){localStorage.setItem(DAY_KEY,JSON.stringify(daily))}
-function statusOf(w){return getRec(w).status||"new"}
-function statusLabel(s){return s==="learned"?"Выучено":s==="reinforce"?"Закрепить":"Новое"}
-function ensureRec(w){const k=wordKey(w);if(!progress[k])progress[k]={status:"new",correct:0,correctSessions:[],wrong:0};return progress[k]}
-function recordResult(w,correct){
-  const r=ensureRec(w);
-  if(correct){
-    r.correct=(r.correct||0)+1;
-    r.correctSessions=Array.isArray(r.correctSessions)?r.correctSessions:[];
-    if(!r.correctSessions.includes(SESSION_ID))r.correctSessions.push(SESSION_ID);
-    if(r.correct>=3&&r.correctSessions.length>=2)r.status="learned";
-    else if(r.status!=="learned")r.status="reinforce";
-  }else{
-    r.wrong=(r.wrong||0)+1;
-    r.status="reinforce";
-    r.correct=0;
-    r.correctSessions=[];
-  }
-  r.last=Date.now();
-  saveProgress();
-  renderCounts();
-  updateProgressPill();
-}
-function filteredWords(filter){
-  const words=allWords();
-  if(filter==="reinforce")return words.filter(w=>statusOf(w)==="reinforce");
-  if(filter==="learned")return words.filter(w=>statusOf(w)==="learned");
-  return words;
-}
-function counts(){
-  const words=allWords();
-  return {all:words.length,reinforce:words.filter(w=>statusOf(w)==="reinforce").length,learned:words.filter(w=>statusOf(w)==="learned").length};
-}
-function renderCounts(){
-  const c=counts();
-  $("#allCount").textContent=c.all;$("#reinforceCount").textContent=c.reinforce;$("#learnedCount").textContent=c.learned;
-  $("#streak").textContent=`${c.learned} ⭐`;
-}
-function lessonProgress(id){
-  const words=allWords().filter(w=>w.lessonId===id);
-  return {known:words.filter(w=>statusOf(w)==="learned").length,total:words.length};
-}
-function renderHome(){
-  renderCounts();renderDaily();
-  $("#topicGrid").innerHTML=LESSONS.map(l=>{const p=lessonProgress(l.id);return`<button class="topic-card" data-id="${l.id}"><div class="topic-icon">${l.icon}</div><div class="topic-meta"><div class="topic-title">${l.title}</div><div class="topic-sub">${l.words.length} слов</div><div class="topic-progress">${p.known}/${p.total} выучено</div></div><div>›</div></button>`}).join("");
-  $$(".topic-card").forEach(b=>b.onclick=()=>openLesson(b.dataset.id));
-}
-function selectLibrary(filter){
-  currentSource=filter;
-  $$(".library-tab").forEach(b=>b.classList.toggle("active",b.dataset.filter===filter));
-  const map={all:["🔤","Повторить все слова","Все слова подряд"],reinforce:["🎯","Закрепить","Слова, которые нужно повторить ещё"],learned:["✓","Выучено","Проверить уже выученные слова"]};
-  const m=map[filter];$("#practiceIcon").textContent=m[0];$("#practiceTitle").textContent=m[1];
-  const n=filteredWords(filter).length;$("#practiceSub").textContent=n?`${m[2]} • ${n}`:(filter==="reinforce"?"Сейчас здесь нет слов":filter==="learned"?"Пока нет выученных слов":m[2]);
-}
-function openLibrary(){
-  const words=filteredWords(currentSource);
-  openStudy({id:`virtual-${currentSource}`,title:currentSource==="all"?"Все слова":currentSource==="reinforce"?"Закрепить":"Выучено",type:"Общий словарь",words});
-}
-function openLesson(id){
-  const l=LESSONS.find(x=>x.id===id);
-  openStudy({id:l.id,title:l.title,type:l.type,words:l.words.map(w=>({...w,lessonId:l.id,lessonTitle:l.title}))});
-}
-function openStudy(source){
-  currentLesson=source;currentWords=[...source.words];cardIndex=0;
-  $("#homeView").classList.add("hidden");$("#studyView").classList.remove("hidden");
-  $("#topicTitle").textContent=source.title;$("#topicType").textContent=source.type;
-  const empty=!currentWords.length;$("#emptyState").classList.toggle("hidden",!empty);$("#studyContent").classList.toggle("hidden",empty);$(".mode-tabs").classList.toggle("hidden",empty);
-  if(empty){$("#emptyTitle").textContent=source.title==="Закрепить"?"Всё закреплено":"Здесь пока пусто";$("#emptyText").textContent=source.title==="Закрепить"?"Ошибочных слов сейчас нет. Можно повторить весь словарь.":"Слова появятся здесь после занятий.";}
-  else{setMode("cards");renderCard();}
-  updateProgressPill();renderDaily();window.scrollTo({top:0,behavior:"smooth"});
-}
-function updateProgressPill(){
-  if(!currentLesson)return;
-  const total=currentWords.length,learned=currentWords.filter(w=>statusOf(w)==="learned").length;
-  $("#progressPill").textContent=`${learned}/${total} ✓`;
-}
-function renderCard(){
-  if(!currentWords.length)return;
-  const w=currentWords[cardIndex%currentWords.length],s=statusOf(w);
-  $("#cardVisual").textContent=w.icon||"🔤";$("#word").textContent=w.en;$("#translation").textContent=w.ru;$("#counter").textContent=`${cardIndex+1} из ${currentWords.length}`;
-  const chip=$("#wordStatus");chip.textContent=statusLabel(s);chip.className=`status-chip ${s}`;
-}
+function statusOf(w){return getRec(w).status||'new'}
+function statusLabel(s){return s==='learned'?'Выучено':s==='reinforce'?'Закрепить':'Новое'}
+function recompute(r){r.status=(r.quizCorrect>=2&&r.buildCorrect>=2&&new Set(r.days||[]).size>=2)?'learned':(r.quizCorrect||r.buildCorrect||r.wrong?'reinforce':'new')}
+function recordResult(w,type,correct){const r=ensureRec(w);if(correct){if(type==='quiz')r.quizCorrect=(r.quizCorrect||0)+1;if(type==='build')r.buildCorrect=(r.buildCorrect||0)+1;r.days=Array.isArray(r.days)?r.days:[];if(!r.days.includes(todayKey()))r.days.push(todayKey());}else{r.wrong=(r.wrong||0)+1;r.quizCorrect=0;r.buildCorrect=0;r.days=[];r.status='reinforce';}recompute(r);r.last=Date.now();saveProgress();renderCounts();updateProgressPill()}
+function filteredWords(filter){const words=allWords();if(filter==='reinforce')return words.filter(w=>statusOf(w)==='reinforce');if(filter==='learned')return words.filter(w=>statusOf(w)==='learned');return words}
+function counts(){const w=allWords();return{all:w.length,reinforce:w.filter(x=>statusOf(x)==='reinforce').length,learned:w.filter(x=>statusOf(x)==='learned').length}}
+function renderCounts(){const c=counts();$('#allCount').textContent=c.all;$('#reinforceCount').textContent=c.reinforce;$('#learnedCount').textContent=c.learned;$('#streak').textContent=`${c.learned} ⭐`}
+function lessonProgress(id){const w=allWords().filter(x=>x.lessonId===id);return{known:w.filter(x=>statusOf(x)==='learned').length,total:w.length}}
+function renderHome(){renderCounts();renderDaily();$('#topicGrid').innerHTML=LESSONS.map(l=>{const p=lessonProgress(l.id);return`<button class="topic-card" data-id="${l.id}"><div class="topic-icon">${l.icon}</div><div class="topic-meta"><div class="topic-title">${l.title}</div><div class="topic-sub">${l.words.length} слов</div><div class="topic-progress">${p.known}/${p.total} выучено</div></div><div>›</div></button>`}).join('');$$('.topic-card').forEach(b=>b.onclick=()=>openLesson(b.dataset.id))}
+function selectLibrary(filter){currentSource=filter;$$('.library-tab').forEach(b=>b.classList.toggle('active',b.dataset.filter===filter));const map={all:['🔤','Повторить все слова','Все слова подряд'],reinforce:['🎯','Закрепить','Слова, которые нужно повторить ещё'],learned:['✓','Выучено','Проверить уже выученные слова']};const m=map[filter],n=filteredWords(filter).length;$('#practiceIcon').textContent=m[0];$('#practiceTitle').textContent=m[1];$('#practiceSub').textContent=n?`${m[2]} • ${n}`:(filter==='reinforce'?'Сейчас здесь нет слов':filter==='learned'?'Пока нет выученных слов':m[2])}
+function openLibrary(){openStudy({id:`virtual-${currentSource}`,title:currentSource==='all'?'Все слова':currentSource==='reinforce'?'Закрепить':'Выучено',type:'Общий словарь',words:filteredWords(currentSource)})}
+function openLesson(id){const l=LESSONS.find(x=>x.id===id);openStudy({id:l.id,title:l.title,type:l.type,words:l.words.map(w=>({...w,lessonId:l.id,lessonTitle:l.title}))})}
+function openStudy(source){currentLesson=source;currentWords=[...source.words];cardIndex=0;$('#homeView').classList.add('hidden');$('#studyView').classList.remove('hidden');$('#topicTitle').textContent=source.title;$('#topicType').textContent=source.type;const empty=!currentWords.length;$('#emptyState').classList.toggle('hidden',!empty);$('#studyContent').classList.toggle('hidden',empty);$('.mode-tabs').classList.toggle('hidden',empty);if(empty){$('#emptyTitle').textContent=source.title==='Закрепить'?'Всё закреплено':'Здесь пока пусто';$('#emptyText').textContent=source.title==='Закрепить'?'Ошибочных слов сейчас нет. Можно повторить весь словарь.':'Слова появятся здесь после занятий.'}else{setMode('cards');renderCard()}updateProgressPill();renderDaily();window.scrollTo({top:0,behavior:'smooth'})}
+function updateProgressPill(){if(!currentLesson)return;$('#progressPill').textContent=`${currentWords.filter(w=>statusOf(w)==='learned').length}/${currentWords.length} ✓`}
+function renderCard(){if(!currentWords.length)return;const w=currentWords[cardIndex%currentWords.length],s=statusOf(w);$('#cardVisual').textContent=w.icon||'🔤';$('#word').textContent=w.en;$('#translation').textContent=w.ru;$('#counter').textContent=`${cardIndex+1} из ${currentWords.length}`;const chip=$('#wordStatus');chip.textContent=statusLabel(s);chip.className=`status-chip ${s}`}
 function nextCard(){cardIndex=(cardIndex+1)%currentWords.length;renderCard()}
-function markCard(correct){const w=currentWords[cardIndex];recordResult(w,correct);nextCard()}
-function speak(text){if(!("speechSynthesis" in window))return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang="en-US";u.rate=.82;speechSynthesis.speak(u)}
+function markCard(knows){const w=currentWords[cardIndex];if(!knows){const r=ensureRec(w);r.wrong=(r.wrong||0)+1;r.status='reinforce';saveProgress();renderCounts();updateProgressPill()}nextCard()}
+function speak(t){if(!('speechSynthesis'in window))return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=.82;speechSynthesis.speak(u)}
 function shuffle(a){return[...a].sort(()=>Math.random()-.5)}
-function pickPracticeWord(){
-  if(!currentWords.length)return null;
-  const weighted=[...currentWords,...currentWords.filter(w=>statusOf(w)==="reinforce"),...currentWords.filter(w=>statusOf(w)==="reinforce")];
-  return weighted[Math.floor(Math.random()*weighted.length)];
-}
-function newQuiz(){
-  quizItem=pickPracticeWord();if(!quizItem)return;
-  $("#quizWord").textContent=quizItem.en;$("#quizFeedback").textContent="";$("#nextQuizBtn").classList.add("hidden");
-  const pool=shuffle(allWords().filter(w=>w.en!==quizItem.en)).slice(0,3),opts=shuffle([quizItem,...pool]);
-  $("#quizOptions").innerHTML=opts.map(o=>`<button class="option" data-en="${o.en}">${o.ru}</button>`).join("");
-  $$("#quizOptions .option").forEach(b=>b.onclick=()=>answerQuiz(b));
-}
-function answerQuiz(btn){
-  const correct=btn.dataset.en===quizItem.en;
-  $$("#quizOptions .option").forEach(b=>{b.disabled=true;if(b.dataset.en===quizItem.en)b.classList.add("correct")});if(!correct)btn.classList.add("wrong");
-  $("#quizFeedback").textContent=correct?"Верно ✓":`Правильно: ${quizItem.ru}`;$("#quizFeedback").style.color=correct?"var(--good)":"var(--bad)";
-  recordResult(quizItem,correct);$("#nextQuizBtn").classList.remove("hidden");
-}
-function newTyping(){
-  typingItem=pickPracticeWord();if(!typingItem)return;
-  $("#typingPrompt").textContent=typingItem.ru;$("#typingInput").value="";$("#typingFeedback").textContent="";$("#nextTypingBtn").classList.add("hidden");$("#checkTypingBtn").classList.remove("hidden");
-}
-function normalize(s){return s.trim().toLowerCase().replace(/\s+/g," ")}
-function checkTyping(){
-  const ok=normalize($("#typingInput").value)===normalize(typingItem.en);
-  $("#typingFeedback").textContent=ok?"Верно ✓":`Правильно: ${typingItem.en}`;$("#typingFeedback").style.color=ok?"var(--good)":"var(--bad)";
-  recordResult(typingItem,ok);$("#checkTypingBtn").classList.add("hidden");$("#nextTypingBtn").classList.remove("hidden");
-}
-function setMode(mode){
-  $$(".mode").forEach(b=>b.classList.toggle("active",b.dataset.mode===mode));$("#cardsMode").classList.toggle("hidden",mode!=="cards");$("#quizMode").classList.toggle("hidden",mode!=="quiz");$("#typingMode").classList.toggle("hidden",mode!=="typing");if(mode==="quiz")newQuiz();if(mode==="typing")newTyping();
-}
+function pickPracticeWord(){if(!currentWords.length)return null;const hard=currentWords.filter(w=>statusOf(w)==='reinforce');const weighted=[...currentWords,...hard,...hard];return weighted[Math.floor(Math.random()*weighted.length)]}
+function newQuiz(){quizItem=pickPracticeWord();if(!quizItem)return;$('#quizWord').textContent=quizItem.en;$('#quizFeedback').textContent='';$('#nextQuizBtn').classList.add('hidden');const pool=shuffle(allWords().filter(w=>w.en!==quizItem.en)).slice(0,3),opts=shuffle([quizItem,...pool]);$('#quizOptions').innerHTML=opts.map(o=>`<button class="option" data-en="${o.en}">${o.ru}</button>`).join('');$$('#quizOptions .option').forEach(b=>b.onclick=()=>answerQuiz(b))}
+function answerQuiz(btn){const ok=btn.dataset.en===quizItem.en;$$('#quizOptions .option').forEach(b=>{b.disabled=true;if(b.dataset.en===quizItem.en)b.classList.add('correct')});if(!ok)btn.classList.add('wrong');$('#quizFeedback').textContent=ok?'Верно ✓':`Правильно: ${quizItem.ru}`;$('#quizFeedback').style.color=ok?'var(--good)':'var(--bad)';recordResult(quizItem,'quiz',ok);$('#nextQuizBtn').classList.remove('hidden')}
+function makeBuild(word){const chars=[...word.en],letters=chars.map((c,i)=>/[a-z]/i.test(c)?i:null).filter(i=>i!==null);const hideCount=Math.max(1,Math.min(4,Math.ceil(letters.length*.4)));const hidden=shuffle(letters).slice(0,hideCount).sort((a,b)=>a-b);return{chars,hidden,answers:hidden.map(i=>chars[i].toLowerCase()),chosen:[]}}
+function renderBuild(){const s=buildState;$('#maskedWord').innerHTML=s.chars.map((c,i)=>s.hidden.includes(i)?`<span class="blank">${s.chosen[s.hidden.indexOf(i)]||'_'}</span>`:`<span>${c===' '?'&nbsp;':c}</span>`).join('')}
+function newBuild(){buildItem=pickPracticeWord();if(!buildItem)return;buildState=makeBuild(buildItem);$('#buildPrompt').textContent=buildItem.ru;$('#buildFeedback').textContent='';$('#nextBuildBtn').classList.add('hidden');renderBuild();const letters=shuffle(buildState.answers.map((l,i)=>({l,i})));$('#letterBank').innerHTML=letters.map((x,j)=>`<button class="letter-btn" data-letter="${x.l}" data-id="${j}">${x.l}</button>`).join('');$$('.letter-btn').forEach(b=>b.onclick=()=>chooseLetter(b))}
+function chooseLetter(btn){if(!buildState||buildState.chosen.length>=buildState.answers.length)return;buildState.chosen.push(btn.dataset.letter);btn.disabled=true;btn.classList.add('used');renderBuild();if(buildState.chosen.length===buildState.answers.length){const ok=buildState.chosen.every((x,i)=>x===buildState.answers[i]);$('#buildFeedback').textContent=ok?'Верно ✓':`Правильно: ${buildItem.en}`;$('#buildFeedback').style.color=ok?'var(--good)':'var(--bad)';recordResult(buildItem,'build',ok);$$('.letter-btn').forEach(b=>b.disabled=true);$('#nextBuildBtn').classList.remove('hidden')}}
+function setMode(mode){$$('.mode').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));$('#cardsMode').classList.toggle('hidden',mode!=='cards');$('#quizMode').classList.toggle('hidden',mode!=='quiz');$('#buildMode').classList.toggle('hidden',mode!=='build');if(mode==='quiz')newQuiz();if(mode==='build')newBuild()}
 function dailySeconds(){return Number(daily[todayKey()]||0)}
-function fmt(sec){const m=Math.floor(sec/60),s=sec%60;return`${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`}
-function renderDaily(){
-  const sec=dailySeconds(),pct=Math.min(100,Math.floor(sec/600*100));
-  $("#dailyTime").textContent=`${fmt(sec)} / 10:00`;$("#studyDailyTime").textContent=`${fmt(sec)} / 10:00`;$("#dailyPercent").textContent=`${pct}%`;$("#dailyRing").style.setProperty("--p",`${pct*3.6}deg`);
-  $("#dailyNote").textContent=sec>=600?"Норма на сегодня выполнена ✓":"Минимум 10 минут английского в день";
-}
-setInterval(()=>{
-  if(document.visibilityState!=="visible")return;
-  const studying=!$("#studyView").classList.contains("hidden");if(!studying)return;
-  const k=todayKey();daily[k]=Number(daily[k]||0)+1;saveDaily();renderDaily();
-},1000);
-
-$("#backBtn").onclick=()=>{$("#studyView").classList.add("hidden");$("#homeView").classList.remove("hidden");renderHome();selectLibrary(currentSource)};
-$("#emptyBackBtn").onclick=$("#backBtn").onclick;
-$("#soundBtn").onclick=()=>currentWords.length&&speak(currentWords[cardIndex].en);
-$("#quizSoundBtn").onclick=()=>quizItem&&speak(quizItem.en);
-$("#knowBtn").onclick=()=>markCard(true);$("#againBtn").onclick=()=>markCard(false);
-$("#nextQuizBtn").onclick=newQuiz;$("#checkTypingBtn").onclick=checkTyping;$("#nextTypingBtn").onclick=newTyping;
-$("#typingInput").addEventListener("keydown",e=>{if(e.key==="Enter"&&!$("#checkTypingBtn").classList.contains("hidden"))checkTyping()});
-$$(".mode").forEach(b=>b.onclick=()=>setMode(b.dataset.mode));
-$$(".library-tab").forEach(b=>b.onclick=()=>selectLibrary(b.dataset.filter));
-$("#practiceSelected").onclick=openLibrary;
-
-migrateOld();renderHome();selectLibrary("all");
-if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
+function fmt(sec){return`${String(Math.floor(sec/60)).padStart(2,'0')}:${String(sec%60).padStart(2,'0')}`}
+function renderDaily(){const sec=dailySeconds(),pct=Math.min(100,Math.floor(sec/600*100));$('#dailyTime').textContent=`${fmt(sec)} / 10:00`;$('#studyDailyTime').textContent=`${fmt(sec)} / 10:00`;$('#dailyPercent').textContent=`${pct}%`;$('#dailyRing').style.setProperty('--p',`${pct*3.6}deg`);$('#dailyNote').textContent=sec>=600?'Норма на сегодня выполнена ✓':'Минимум 10 минут английского в день'}
+setInterval(()=>{if(document.visibilityState!=='visible'||$('#studyView').classList.contains('hidden'))return;const k=todayKey();daily[k]=Number(daily[k]||0)+1;saveDaily();renderDaily()},1000);
+$('#backBtn').onclick=()=>{$('#studyView').classList.add('hidden');$('#homeView').classList.remove('hidden');renderHome();selectLibrary(currentSource)};$('#emptyBackBtn').onclick=$('#backBtn').onclick;$('#soundBtn').onclick=()=>currentWords.length&&speak(currentWords[cardIndex].en);$('#quizSoundBtn').onclick=()=>quizItem&&speak(quizItem.en);$('#knowBtn').onclick=()=>markCard(true);$('#againBtn').onclick=()=>markCard(false);$('#nextQuizBtn').onclick=newQuiz;$('#nextBuildBtn').onclick=newBuild;$$('.mode').forEach(b=>b.onclick=()=>setMode(b.dataset.mode));$$('.library-tab').forEach(b=>b.onclick=()=>selectLibrary(b.dataset.filter));$('#practiceSelected').onclick=openLibrary;
+migrate();renderHome();selectLibrary('all');
