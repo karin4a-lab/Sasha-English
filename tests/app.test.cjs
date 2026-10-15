@@ -11,8 +11,8 @@ function fillBuild(f) {
 }
 test('home retains Today, all three sections and dynamically generated topics',()=>{
   const f=fixture();
-  assert.equal(f.element('#allCount').textContent,59);
-  assert.equal(f.elements('.topic-card').length,4);
+  assert.equal(f.element('#allCount').textContent,f.run('allWords().length'));
+  assert.equal(f.elements('.topic-card').length,f.run('LESSONS.length'));
   assert.equal(f.element('#dailyTime').textContent,'00:00 / 10:00');
   assert.equal(f.elements('.library-tab').length,3);
   assert.equal(f.element('#dailyButtonTitle').textContent,'Занятие на сегодня');
@@ -124,13 +124,14 @@ test('daily goal uses already completed minutes and summary stops time',()=>{
 });
 test('new topics and appended words appear without a manual interface change',()=>{
   const f=fixture();
-  f.run("recordResult(allWords()[0],'quiz',true);LESSONS.push({id:'animals',title:'Животные',words:[{en:'cat',ru:'кошка',icon:'🐈'}]});LESSONS[0].words.push({en:'above',ru:'выше'});renderHome();");
-  assert.equal(f.element('#allCount').textContent,61);
-  assert.equal(f.elements('.topic-card').length,5);
+  const before=f.run('allWords().length'),topicCount=f.run('LESSONS.length');
+  f.run("recordResult(allWords()[0],'quiz',true);LESSONS.push({id:'animals',title:'Животные',words:[{en:'otter',ru:'выдра',icon:'🦦'}]});LESSONS[0].words.push({en:'above',ru:'выше'});renderHome();");
+  assert.equal(f.element('#allCount').textContent,before+2);
+  assert.equal(f.elements('.topic-card').length,topicCount+1);
   assert.equal(f.run('getRec(allWords()[0]).quizCorrect'),1);
   f.elements('.topic-card').find(b=>b.dataset.id==='animals').click();
   assert.equal(f.run('currentWords.length'),1);
-  assert.equal(f.element('#word').textContent,'cat');
+  assert.equal(f.element('#word').textContent,'otter');
   assert.equal(f.run('getRec(currentWords[0]).status'),'new');
 });
 test('saved progress reloads and storage failures do not break the buttons',()=>{

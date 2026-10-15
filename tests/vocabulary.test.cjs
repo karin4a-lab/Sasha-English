@@ -9,8 +9,8 @@ test('both school photographs add exactly 37 numbers and seven unique personal p
   assert.equal(new Set(numbers.map(w=>w.en)).size,37);
   const pronouns=JSON.parse(f.run("JSON.stringify(LESSONS.find(l=>l.id==='personal-pronouns-1').words)"));
   assert.deepEqual(pronouns.map(w=>[w.en,w.ru]),[['I','я'],['you','ты, вы'],['he','он'],['she','она'],['it','оно'],['we','мы'],['they','они']]);
-  assert.equal(f.run('allWords().length'),59);
-  assert.equal(f.run('new Set(allWords().map(wordKey)).size'),59);
+  assert.equal(f.run("allWords().filter(w=>['prepositions-1','activities-1','numbers-1','personal-pronouns-1'].includes(w.lessonId)).length"),59);
+  assert.equal(f.run('new Set(allWords().map(wordKey)).size'),f.run('allWords().length'));
   assert.equal(f.run("LESSONS.filter(l=>['prepositions-1','activities-1'].includes(l.id)).reduce((n,l)=>n+l.words.length,0)"),15);
 });
 test('I stays uppercase in the letter bank and can be checked without typing',()=>{

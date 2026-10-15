@@ -1,11 +1,11 @@
 # Sasha-English
 English words and exercises for Sasha
 
-Published at https://karin4a-lab.github.io/Sasha-English/ (version 9).
+Published at https://karin4a-lab.github.io/Sasha-English/ (version 10).
 
 ## Source files
 
-`index.html` loads `data-v9.js`, `learning-v9.js`, `visuals-v8.js`, `app-v8.js`, and
+`index.html` loads `data-v10.js`, `learning-v10.js`, `visuals-v8.js`, `app-v10.js`, and
 `styles-v8.css`. These versioned filenames prevent mixing old scripts/styles with
 new HTML. `app.js` and `styles.css` are retained for older cached pages; they are
 not the current application. `sw.js` retires the previous cache worker.
@@ -13,7 +13,7 @@ not the current application. `sw.js` retires the previous cache worker.
 ## Adding school words and topics
 
 Edit `data.js` to add content, and regenerate the versioned data snapshot loaded
-by `index.html` in the same commit. `data-v9.js` is the current snapshot. The sections, topic buttons, counts, practice
+by `index.html` in the same commit. `data-v10.js` is the current snapshot. The sections, topic buttons, counts, practice
 questions, letter tasks, progress screen, matching game, and daily lessons are
 generated from `LESSONS`; there is no fixed word count or hardcoded topic menu.
 
@@ -22,6 +22,13 @@ Keep existing lesson IDs and English spellings stable so existing progress keys
 Words may optionally use a globally unique stable `id`; do not add or change an
 ID on an existing word without migrating its old progress key. Do not delete
 existing words when appending a new school photograph's vocabulary.
+
+When an existing word belongs to a new group as well, give its new group entry
+an `id` equal to the existing progress key (e.g. `numbers-1::three`). Do not alter
+the original entry. `lessonWords` returns the entries for a selected group;
+`allWords` deduplicates by progress key for global counts, the daily queue and
+quizzes. Both groups then share the same progress. Do not filter the global
+deduplicated list by lesson ID to build a group: use `lessonWords` instead.
 
 Each word needs `en` and `ru`, and may have an `icon`. Preposition illustrations
 are SVG scenes selected by the English word; other/new words use their icon.
@@ -47,6 +54,15 @@ one blank and distractor letters instead of a typing field. Existing topic IDs,
 word keys, storage keys, and mastery rules are unchanged.
 New words are interleaved across topics; a long number list cannot block the
 pronoun topic from appearing in daily introductions.
+
+Version 10 adds the single group «2–3 класс» from all 15 notebook photographs.
+The transcription is preserved in `vocabulary/grade-2-3-sources.json`: 219 source
+entries, 205 distinct words/phrases in the group, including 15 shared earlier
+cards. This adds 190 new cards for a total of 249 unique cards. Existing 59 word
+records and storage keys are unchanged. Obvious spelling errors were corrected,
+multi-line phrases joined, and the final page's missing translations supplied.
+The app caches the Moscow day per minute so a larger dictionary does not format
+the date repeatedly for every word during each progress update.
 
 The daily lesson prioritizes difficult and overdue words, chooses tasks based on
 missing proof, and normally introduces up to three new words per Moscow day.

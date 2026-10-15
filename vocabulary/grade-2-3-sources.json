@@ -1,0 +1,1182 @@
+{
+  "title": "2–3 класс",
+  "pages": [
+    {
+      "photo": "01-1000095881.jpg",
+      "words": [
+        {
+          "en": "ant",
+          "ru": "муравей",
+          "icon": "🐜"
+        },
+        {
+          "en": "bed",
+          "ru": "кровать",
+          "icon": "🛏️"
+        },
+        {
+          "en": "cat",
+          "ru": "кот",
+          "icon": "🐈"
+        },
+        {
+          "en": "dog",
+          "ru": "собака",
+          "icon": "🐕"
+        },
+        {
+          "en": "egg",
+          "ru": "яйцо",
+          "icon": "🥚"
+        },
+        {
+          "en": "flag",
+          "ru": "флаг",
+          "icon": "🏳️"
+        },
+        {
+          "en": "glass",
+          "ru": "стекло",
+          "icon": "🪟"
+        },
+        {
+          "en": "horse",
+          "ru": "лошадь",
+          "icon": "🐎"
+        },
+        {
+          "en": "ink",
+          "ru": "чернила",
+          "icon": "🖋️"
+        },
+        {
+          "en": "jug",
+          "ru": "кувшин",
+          "icon": "🏺"
+        },
+        {
+          "en": "kangaroo",
+          "ru": "кенгуру",
+          "icon": "🦘"
+        },
+        {
+          "en": "lamp",
+          "ru": "лампа",
+          "icon": "💡"
+        },
+        {
+          "en": "mouse",
+          "ru": "мышь",
+          "icon": "🐁"
+        },
+        {
+          "en": "nest",
+          "ru": "гнездо",
+          "icon": "🪺"
+        },
+        {
+          "en": "orange",
+          "ru": "апельсин",
+          "icon": "🍊"
+        }
+      ]
+    },
+    {
+      "photo": "02-1000095882.jpg",
+      "words": [
+        {
+          "en": "pin",
+          "ru": "булавка",
+          "icon": "🧷"
+        },
+        {
+          "en": "queen",
+          "ru": "королева",
+          "icon": "👑"
+        },
+        {
+          "en": "rabbit",
+          "ru": "кролик",
+          "icon": "🐇"
+        },
+        {
+          "en": "snake",
+          "ru": "змея",
+          "icon": "🐍"
+        },
+        {
+          "en": "tree",
+          "ru": "дерево",
+          "icon": "🌳"
+        },
+        {
+          "en": "umbrella",
+          "ru": "зонт",
+          "icon": "☂️"
+        },
+        {
+          "en": "vest",
+          "ru": "жилет",
+          "icon": "🦺"
+        },
+        {
+          "en": "window",
+          "ru": "окно",
+          "icon": "🪟"
+        },
+        {
+          "en": "box",
+          "ru": "коробка",
+          "icon": "📦"
+        },
+        {
+          "en": "yacht",
+          "ru": "яхта",
+          "icon": "⛵"
+        },
+        {
+          "en": "zip",
+          "ru": "молния (застёжка)",
+          "icon": "🤐"
+        },
+        {
+          "en": "sheep",
+          "ru": "овца",
+          "icon": "🐑"
+        },
+        {
+          "en": "fish",
+          "ru": "рыба",
+          "icon": "🐟"
+        },
+        {
+          "en": "ship",
+          "ru": "корабль",
+          "icon": "🚢"
+        }
+      ]
+    },
+    {
+      "photo": "03-1000095883.jpg",
+      "words": [
+        {
+          "en": "chick",
+          "ru": "цыплёнок",
+          "icon": "🐤"
+        },
+        {
+          "en": "cheese",
+          "ru": "сыр",
+          "icon": "🧀"
+        },
+        {
+          "en": "thumb",
+          "ru": "большой палец",
+          "icon": "👍"
+        },
+        {
+          "en": "three",
+          "ru": "три",
+          "icon": "3"
+        },
+        {
+          "en": "photo",
+          "ru": "фотография",
+          "icon": "📷"
+        },
+        {
+          "en": "dolphin",
+          "ru": "дельфин",
+          "icon": "🐬"
+        },
+        {
+          "en": "elephant",
+          "ru": "слон",
+          "icon": "🐘"
+        },
+        {
+          "en": "stand up",
+          "ru": "встаньте",
+          "icon": "🧍"
+        },
+        {
+          "en": "sit down",
+          "ru": "сядьте",
+          "icon": "🪑"
+        },
+        {
+          "en": "open your book",
+          "ru": "откройте книгу",
+          "icon": "📖"
+        },
+        {
+          "en": "close your book",
+          "ru": "закройте книгу",
+          "icon": "📕"
+        },
+        {
+          "en": "pen",
+          "ru": "ручка",
+          "icon": "🖊️"
+        },
+        {
+          "en": "book",
+          "ru": "книга",
+          "icon": "📚"
+        },
+        {
+          "en": "pencil",
+          "ru": "карандаш",
+          "icon": "✏️"
+        },
+        {
+          "en": "workbook",
+          "ru": "рабочая тетрадь",
+          "icon": "📓"
+        }
+      ]
+    },
+    {
+      "photo": "04-1000095886.jpg",
+      "words": [
+        {
+          "en": "birthday",
+          "ru": "день рождения",
+          "icon": "🎂"
+        },
+        {
+          "en": "today",
+          "ru": "сегодня",
+          "icon": "📅"
+        },
+        {
+          "en": "surprise",
+          "ru": "сюрприз",
+          "icon": "🎁"
+        },
+        {
+          "en": "burger",
+          "ru": "бургер",
+          "icon": "🍔"
+        },
+        {
+          "en": "chips",
+          "ru": "картофель фри",
+          "icon": "🍟"
+        },
+        {
+          "en": "apple",
+          "ru": "яблоко",
+          "icon": "🍎"
+        },
+        {
+          "en": "banana",
+          "ru": "банан",
+          "icon": "🍌"
+        },
+        {
+          "en": "sandwich",
+          "ru": "бутерброд",
+          "icon": "🥪"
+        },
+        {
+          "en": "chocolate",
+          "ru": "шоколад",
+          "icon": "🍫"
+        },
+        {
+          "en": "What's your favourite food?",
+          "ru": "Какая твоя любимая еда?",
+          "icon": "💬"
+        },
+        {
+          "en": "ice cream",
+          "ru": "мороженое",
+          "icon": "🍨"
+        },
+        {
+          "en": "pizza",
+          "ru": "пицца",
+          "icon": "🍕"
+        },
+        {
+          "en": "milk",
+          "ru": "молоко",
+          "icon": "🥛"
+        },
+        {
+          "en": "orange juice",
+          "ru": "апельсиновый сок",
+          "icon": "🧃"
+        }
+      ]
+    },
+    {
+      "photo": "05-1000095885.jpg",
+      "words": [
+        {
+          "en": "candle",
+          "ru": "свеча",
+          "icon": "🕯️"
+        },
+        {
+          "en": "party",
+          "ru": "вечеринка, праздник",
+          "icon": "🎉"
+        },
+        {
+          "en": "happy",
+          "ru": "счастливый",
+          "icon": "😊"
+        },
+        {
+          "en": "sad",
+          "ru": "грустный",
+          "icon": "😔"
+        },
+        {
+          "en": "How old are you?",
+          "ru": "Сколько тебе лет?",
+          "icon": "💬"
+        },
+        {
+          "en": "one",
+          "ru": "один",
+          "icon": "1"
+        },
+        {
+          "en": "two",
+          "ru": "два",
+          "icon": "2"
+        },
+        {
+          "en": "three",
+          "ru": "три",
+          "icon": "3"
+        },
+        {
+          "en": "four",
+          "ru": "четыре",
+          "icon": "4"
+        },
+        {
+          "en": "five",
+          "ru": "пять",
+          "icon": "5"
+        },
+        {
+          "en": "six",
+          "ru": "шесть",
+          "icon": "6"
+        },
+        {
+          "en": "seven",
+          "ru": "семь",
+          "icon": "7"
+        },
+        {
+          "en": "eight",
+          "ru": "восемь",
+          "icon": "8"
+        },
+        {
+          "en": "nine",
+          "ru": "девять",
+          "icon": "9"
+        },
+        {
+          "en": "ten",
+          "ru": "десять",
+          "icon": "10"
+        },
+        {
+          "en": "eleven",
+          "ru": "одиннадцать",
+          "icon": "11"
+        },
+        {
+          "en": "twelve",
+          "ru": "двенадцать",
+          "icon": "12"
+        }
+      ]
+    },
+    {
+      "photo": "06-1000095884.jpg",
+      "words": [
+        {
+          "en": "mummy",
+          "ru": "мама",
+          "icon": "👩"
+        },
+        {
+          "en": "daddy",
+          "ru": "папа",
+          "icon": "👨"
+        },
+        {
+          "en": "grandma",
+          "ru": "бабушка",
+          "icon": "👵"
+        },
+        {
+          "en": "grandpa",
+          "ru": "дедушка",
+          "icon": "👴"
+        },
+        {
+          "en": "brother",
+          "ru": "брат",
+          "icon": "👦"
+        },
+        {
+          "en": "sister",
+          "ru": "сестра",
+          "icon": "👧"
+        },
+        {
+          "en": "red",
+          "ru": "красный",
+          "icon": "🔴"
+        },
+        {
+          "en": "yellow",
+          "ru": "жёлтый",
+          "icon": "🟡"
+        },
+        {
+          "en": "blue",
+          "ru": "синий",
+          "icon": "🔵"
+        },
+        {
+          "en": "green",
+          "ru": "зелёный",
+          "icon": "🟢"
+        },
+        {
+          "en": "white",
+          "ru": "белый",
+          "icon": "⚪"
+        },
+        {
+          "en": "tree house",
+          "ru": "домик на дереве",
+          "icon": "🌳"
+        },
+        {
+          "en": "chair",
+          "ru": "стул",
+          "icon": "🪑"
+        },
+        {
+          "en": "table",
+          "ru": "стол",
+          "icon": "🪑"
+        },
+        {
+          "en": "radio",
+          "ru": "радио",
+          "icon": "📻"
+        }
+      ]
+    },
+    {
+      "photo": "07-1000095887.jpg",
+      "words": [
+        {
+          "en": "chocolate",
+          "ru": "шоколад",
+          "icon": "🍫"
+        },
+        {
+          "en": "cake",
+          "ru": "торт",
+          "icon": "🎂"
+        },
+        {
+          "en": "Christmas tree",
+          "ru": "рождественская ёлка",
+          "icon": "🎄"
+        },
+        {
+          "en": "Father Christmas",
+          "ru": "Дед Мороз",
+          "icon": "🎅"
+        },
+        {
+          "en": "present",
+          "ru": "подарок",
+          "icon": "🎁"
+        },
+        {
+          "en": "snowman",
+          "ru": "снеговик",
+          "icon": "⛄"
+        },
+        {
+          "en": "decorations",
+          "ru": "украшения",
+          "icon": "🎊"
+        },
+        {
+          "en": "candy cane",
+          "ru": "карамельная трость",
+          "icon": "🍬"
+        },
+        {
+          "en": "bells",
+          "ru": "колокольчики",
+          "icon": "🔔"
+        },
+        {
+          "en": "Christmas pudding",
+          "ru": "рождественский пудинг",
+          "icon": "🍮"
+        },
+        {
+          "en": "animal",
+          "ru": "животное",
+          "icon": "🐾"
+        },
+        {
+          "en": "bird",
+          "ru": "птица",
+          "icon": "🐦"
+        },
+        {
+          "en": "frog",
+          "ru": "лягушка",
+          "icon": "🐸"
+        },
+        {
+          "en": "chimp",
+          "ru": "шимпанзе",
+          "icon": "🐒"
+        },
+        {
+          "en": "swim",
+          "ru": "плавать",
+          "icon": "🏊"
+        }
+      ]
+    },
+    {
+      "photo": "08-1000095888.jpg",
+      "words": [
+        {
+          "en": "sing",
+          "ru": "петь",
+          "icon": "🎤"
+        },
+        {
+          "en": "dance",
+          "ru": "танцевать",
+          "icon": "💃"
+        },
+        {
+          "en": "jump",
+          "ru": "прыгать",
+          "icon": "🦘"
+        },
+        {
+          "en": "run",
+          "ru": "бегать",
+          "icon": "🏃"
+        },
+        {
+          "en": "climb",
+          "ru": "взбираться",
+          "icon": "🧗"
+        },
+        {
+          "en": "fly",
+          "ru": "летать",
+          "icon": "🪽"
+        },
+        {
+          "en": "can",
+          "ru": "уметь, мочь",
+          "icon": "💪"
+        },
+        {
+          "en": "boy",
+          "ru": "мальчик",
+          "icon": "👦"
+        },
+        {
+          "en": "girl",
+          "ru": "девочка",
+          "icon": "👧"
+        },
+        {
+          "en": "circus",
+          "ru": "цирк",
+          "icon": "🎪"
+        },
+        {
+          "en": "clown",
+          "ru": "клоун",
+          "icon": "🤡"
+        },
+        {
+          "en": "funny",
+          "ru": "смешной",
+          "icon": "😄"
+        },
+        {
+          "en": "magician",
+          "ru": "фокусник",
+          "icon": "🪄"
+        },
+        {
+          "en": "swing",
+          "ru": "качаться на качелях",
+          "icon": "🛝"
+        },
+        {
+          "en": "teddy bear",
+          "ru": "плюшевый мишка",
+          "icon": "🧸"
+        },
+        {
+          "en": "doll",
+          "ru": "кукла",
+          "icon": "🪆"
+        },
+        {
+          "en": "toy soldier",
+          "ru": "игрушечный солдатик",
+          "icon": "🪖"
+        },
+        {
+          "en": "toy box",
+          "ru": "ящик для игрушек",
+          "icon": "📦"
+        }
+      ]
+    },
+    {
+      "photo": "09-1000095889.jpg",
+      "words": [
+        {
+          "en": "toy",
+          "ru": "игрушка",
+          "icon": "🧸"
+        },
+        {
+          "en": "ballerina",
+          "ru": "балерина",
+          "icon": "🩰"
+        },
+        {
+          "en": "shelf",
+          "ru": "полка",
+          "icon": "📚"
+        },
+        {
+          "en": "in",
+          "ru": "в",
+          "icon": "📦"
+        },
+        {
+          "en": "on",
+          "ru": "на",
+          "icon": "⬇️"
+        },
+        {
+          "en": "under",
+          "ru": "под",
+          "icon": "⬆️"
+        },
+        {
+          "en": "near",
+          "ru": "рядом",
+          "icon": "📍"
+        },
+        {
+          "en": "eyes",
+          "ru": "глаза",
+          "icon": "👀"
+        },
+        {
+          "en": "nose",
+          "ru": "нос",
+          "icon": "👃"
+        },
+        {
+          "en": "ears",
+          "ru": "уши",
+          "icon": "👂"
+        },
+        {
+          "en": "mouth",
+          "ru": "рот",
+          "icon": "👄"
+        },
+        {
+          "en": "dark hair",
+          "ru": "тёмные волосы",
+          "icon": "👩🏻"
+        },
+        {
+          "en": "fair hair",
+          "ru": "светлые волосы",
+          "icon": "👩🏼"
+        },
+        {
+          "en": "puppet",
+          "ru": "марионетка",
+          "icon": "🎭"
+        }
+      ]
+    },
+    {
+      "photo": "10-1000095892.jpg",
+      "words": [
+        {
+          "en": "ruler",
+          "ru": "линейка",
+          "icon": "📏"
+        },
+        {
+          "en": "book",
+          "ru": "книга",
+          "icon": "📚"
+        },
+        {
+          "en": "chicken",
+          "ru": "курица",
+          "icon": "🐔"
+        },
+        {
+          "en": "vegetables",
+          "ru": "овощи",
+          "icon": "🥕"
+        },
+        {
+          "en": "ice cream",
+          "ru": "мороженое",
+          "icon": "🍨"
+        },
+        {
+          "en": "chocolate",
+          "ru": "шоколад",
+          "icon": "🍫"
+        },
+        {
+          "en": "water",
+          "ru": "вода",
+          "icon": "💧"
+        },
+        {
+          "en": "lemonade",
+          "ru": "лимонад",
+          "icon": "🍋"
+        },
+        {
+          "en": "pizza",
+          "ru": "пицца",
+          "icon": "🍕"
+        },
+        {
+          "en": "eggs",
+          "ru": "яйца",
+          "icon": "🥚"
+        },
+        {
+          "en": "sandwiches",
+          "ru": "сэндвичи",
+          "icon": "🥪"
+        },
+        {
+          "en": "burgers",
+          "ru": "бургеры",
+          "icon": "🍔"
+        },
+        {
+          "en": "meat",
+          "ru": "мясо",
+          "icon": "🥩"
+        },
+        {
+          "en": "potato",
+          "ru": "картофель",
+          "icon": "🥔"
+        },
+        {
+          "en": "biscuits",
+          "ru": "печенье",
+          "icon": "🍪"
+        },
+        {
+          "en": "milk",
+          "ru": "молоко",
+          "icon": "🥛"
+        },
+        {
+          "en": "cake",
+          "ru": "торт",
+          "icon": "🎂"
+        },
+        {
+          "en": "orange juice",
+          "ru": "апельсиновый сок",
+          "icon": "🧃"
+        }
+      ]
+    },
+    {
+      "photo": "11-1000095891.jpg",
+      "words": [
+        {
+          "en": "T-shirt",
+          "ru": "футболка",
+          "icon": "👕"
+        },
+        {
+          "en": "island",
+          "ru": "остров",
+          "icon": "🏝️"
+        },
+        {
+          "en": "It's windy!",
+          "ru": "Ветрено!",
+          "icon": "🌬️"
+        },
+        {
+          "en": "It's cold!",
+          "ru": "Холодно!",
+          "icon": "🥶"
+        },
+        {
+          "en": "autumn",
+          "ru": "осень",
+          "icon": "🍂"
+        },
+        {
+          "en": "winter",
+          "ru": "зима",
+          "icon": "❄️"
+        },
+        {
+          "en": "summer",
+          "ru": "лето",
+          "icon": "☀️"
+        },
+        {
+          "en": "spring",
+          "ru": "весна",
+          "icon": "🌷"
+        },
+        {
+          "en": "flowers",
+          "ru": "цветы",
+          "icon": "🌸"
+        },
+        {
+          "en": "music",
+          "ru": "музыка",
+          "icon": "🎵"
+        },
+        {
+          "en": "sun",
+          "ru": "солнце",
+          "icon": "☀️"
+        },
+        {
+          "en": "school",
+          "ru": "школа",
+          "icon": "🏫"
+        },
+        {
+          "en": "school bag",
+          "ru": "рюкзак",
+          "icon": "🎒"
+        },
+        {
+          "en": "pen",
+          "ru": "ручка",
+          "icon": "🖊️"
+        },
+        {
+          "en": "pencil",
+          "ru": "карандаш",
+          "icon": "✏️"
+        },
+        {
+          "en": "rubber",
+          "ru": "ластик",
+          "icon": "✏️"
+        }
+      ]
+    },
+    {
+      "photo": "12-1000095890.jpg",
+      "words": [
+        {
+          "en": "jack-in-the-box",
+          "ru": "игрушка-попрыгунчик",
+          "icon": "📦"
+        },
+        {
+          "en": "ball",
+          "ru": "мяч",
+          "icon": "⚽"
+        },
+        {
+          "en": "small",
+          "ru": "маленький",
+          "icon": "🐁"
+        },
+        {
+          "en": "big",
+          "ru": "большой",
+          "icon": "🐘"
+        },
+        {
+          "en": "It's sunny!",
+          "ru": "Солнечно!",
+          "icon": "☀️"
+        },
+        {
+          "en": "It's hot!",
+          "ru": "Жарко!",
+          "icon": "🥵"
+        },
+        {
+          "en": "It's raining!",
+          "ru": "Идёт дождь!",
+          "icon": "🌧️"
+        },
+        {
+          "en": "take off",
+          "ru": "снимать (одежду)",
+          "icon": "🧥"
+        },
+        {
+          "en": "put on",
+          "ru": "надевать",
+          "icon": "👕"
+        },
+        {
+          "en": "coat",
+          "ru": "пальто",
+          "icon": "🧥"
+        },
+        {
+          "en": "jacket",
+          "ru": "куртка",
+          "icon": "🧥"
+        },
+        {
+          "en": "shorts",
+          "ru": "шорты",
+          "icon": "🩳"
+        },
+        {
+          "en": "hat",
+          "ru": "шляпа",
+          "icon": "👒"
+        },
+        {
+          "en": "jeans",
+          "ru": "джинсы",
+          "icon": "👖"
+        },
+        {
+          "en": "shoes",
+          "ru": "туфли",
+          "icon": "👞"
+        },
+        {
+          "en": "skirt",
+          "ru": "юбка",
+          "icon": "👗"
+        }
+      ]
+    },
+    {
+      "photo": "13-1000095893.jpg",
+      "words": [
+        {
+          "en": "pasta",
+          "ru": "макароны",
+          "icon": "🍝"
+        },
+        {
+          "en": "carrots",
+          "ru": "морковь",
+          "icon": "🥕"
+        },
+        {
+          "en": "sausages",
+          "ru": "сосиски",
+          "icon": "🌭"
+        },
+        {
+          "en": "rice",
+          "ru": "рис",
+          "icon": "🍚"
+        },
+        {
+          "en": "popcorn",
+          "ru": "попкорн",
+          "icon": "🍿"
+        },
+        {
+          "en": "musical box",
+          "ru": "музыкальная шкатулка",
+          "icon": "🎶"
+        },
+        {
+          "en": "tea set",
+          "ru": "чайный сервиз",
+          "icon": "🫖"
+        },
+        {
+          "en": "doll",
+          "ru": "кукла",
+          "icon": "🪆"
+        },
+        {
+          "en": "elephant",
+          "ru": "слон",
+          "icon": "🐘"
+        },
+        {
+          "en": "rocking horse",
+          "ru": "лошадка-качалка",
+          "icon": "🐎"
+        },
+        {
+          "en": "aeroplane",
+          "ru": "самолёт",
+          "icon": "✈️"
+        },
+        {
+          "en": "ball",
+          "ru": "мяч",
+          "icon": "⚽"
+        },
+        {
+          "en": "train",
+          "ru": "поезд",
+          "icon": "🚆"
+        }
+      ]
+    },
+    {
+      "photo": "14-1000095894.jpg",
+      "words": [
+        {
+          "en": "small nose",
+          "ru": "маленький нос",
+          "icon": "👃"
+        },
+        {
+          "en": "big ears",
+          "ru": "большие уши",
+          "icon": "👂"
+        },
+        {
+          "en": "big eyes",
+          "ru": "большие глаза",
+          "icon": "👀"
+        },
+        {
+          "en": "small head",
+          "ru": "маленькая голова",
+          "icon": "🙂"
+        },
+        {
+          "en": "thin legs",
+          "ru": "тонкие ноги",
+          "icon": "🦵"
+        },
+        {
+          "en": "fat body",
+          "ru": "толстое тело",
+          "icon": "🐻"
+        },
+        {
+          "en": "long tail",
+          "ru": "длинный хвост",
+          "icon": "🐒"
+        },
+        {
+          "en": "short tail",
+          "ru": "короткий хвост",
+          "icon": "🐇"
+        },
+        {
+          "en": "house",
+          "ru": "дом",
+          "icon": "🏠"
+        },
+        {
+          "en": "bedroom",
+          "ru": "спальня",
+          "icon": "🛏️"
+        },
+        {
+          "en": "bathroom",
+          "ru": "ванная комната",
+          "icon": "🛁"
+        },
+        {
+          "en": "kitchen",
+          "ru": "кухня",
+          "icon": "🍳"
+        },
+        {
+          "en": "living room",
+          "ru": "гостиная",
+          "icon": "🛋️"
+        },
+        {
+          "en": "garden",
+          "ru": "сад",
+          "icon": "🌳"
+        },
+        {
+          "en": "sleep",
+          "ru": "спать",
+          "icon": "😴"
+        },
+        {
+          "en": "ride a horse",
+          "ru": "ездить верхом",
+          "icon": "🏇"
+        }
+      ]
+    },
+    {
+      "photo": "15-1000095895.jpg",
+      "words": [
+        {
+          "en": "fly a kite",
+          "ru": "запускать воздушного змея",
+          "icon": "🪁"
+        },
+        {
+          "en": "watch TV",
+          "ru": "смотреть телевизор",
+          "icon": "📺"
+        },
+        {
+          "en": "make a sandcastle",
+          "ru": "строить замок из песка",
+          "icon": "🏖️"
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "Repeated entries are listed once in the group. Existing number and preposition cards share their original progress keys.",
+    "Spelling was normalized, including yacht, clown, thumb, shorts, bathroom and watch TV.",
+    "Multi-line phrases were joined, including open your book, Christmas tree, Father Christmas, orange juice, rocking horse and make a sandcastle.",
+    "Missing Russian translations on page 15 were supplied. ride a horse is translated as ездить верхом.",
+    "The incomplete food question is represented by the grammatical phrase What's your favourite food?. Informal Russian-letter pronunciation notes were not copied."
+  ]
+}

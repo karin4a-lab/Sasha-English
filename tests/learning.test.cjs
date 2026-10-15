@@ -134,9 +134,9 @@ test('daily plan limits new words, includes overdue learned words and picks miss
 test('adding a topic and words automatically updates plans without touching old progress', () => {
   const p = {[L.wordKey(words[0])]:learned()};
   const before = JSON.stringify(p);
-  const expanded = L.allWords([...lessons,{id:'animals',title:'Животные',words:[{en:'cat',ru:'кошка'},{en:'dog',ru:'собака'}]}]);
+  const expanded = L.allWords([...lessons,{id:'animals',title:'Животные',words:[{en:'otter',ru:'выдра'},{en:'fox',ru:'лиса'}]}]);
   assert.equal(expanded.length, words.length+2);
-  assert.equal(L.getRec(p, expanded.find(w=>w.en==='cat'), day).status,'new');
+  assert.equal(L.getRec(p, expanded.find(w=>w.en==='otter'), day).status,'new');
   assert.equal(L.getRec(p, words[0], day).status,'learned');
   const newOnly = expanded.filter(w=>w.lessonId==='animals');
   assert.equal(L.createPlan(newOnly,p,day,[]).newCount,2);
