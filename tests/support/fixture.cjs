@@ -64,7 +64,8 @@ function fixture(options = {}) {
     setInterval:fn=>intervals.push(fn),setTimeout:fn=>fn(),Blob,
     URL:{createObjectURL:()=> 'blob:test',revokeObjectURL(){}},
     SpeechSynthesisUtterance:options.audio===false?undefined:class{constructor(text){this.text=text;}}});
-  for(const file of ['data.js','learning-v8.js','visuals-v8.js','app-v8.js'])vm.runInContext(fs.readFileSync(path.join(root,file),'utf8'),context,{filename:file});
+  const scripts = [...fs.readFileSync(path.join(root,'index.html'),'utf8').matchAll(/<script src="([^"]+)"/g)].map(m=>m[1].split('?')[0]);
+  for(const file of scripts)vm.runInContext(fs.readFileSync(path.join(root,file),'utf8'),context,{filename:file});
   return {context,document,storage,speech,run:code=>vm.runInContext(code,context),
     click:selector=>document.querySelector(selector).click(),
     advance:seconds=>{for(let i=0;i<seconds;i++){now+=1000;intervals.forEach(fn=>fn());}},

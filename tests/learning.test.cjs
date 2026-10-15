@@ -3,8 +3,11 @@ const assert = require('node:assert/strict');
 const vm = require('node:vm');
 const fs = require('node:fs');
 const path = require('node:path');
-const L = require('../learning-v8.js');
-const source = fs.readFileSync(path.join(__dirname, '..', 'data.js'), 'utf8');
+const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+const engineFile = html.match(/<script src="(learning[^"?]+)(?:\?[^" ]*)?"/)[1];
+const dataFile = html.match(/<script src="(data[^"?]+)(?:\?[^" ]*)?"/)[1];
+const L = require('../' + engineFile);
+const source = fs.readFileSync(path.join(__dirname, '..', dataFile), 'utf8');
 const lessons = vm.runInNewContext(source + '\nJSON.parse(JSON.stringify(LESSONS));');
 const words = L.allWords(lessons), day = '2026-10-11';
 function learned() {
@@ -74,7 +77,7 @@ test('all words keep partial spelling, spaces, and plausible distractor letters'
     for (let n = 0; n < 25; n++) {
       const s = L.makeBuild(w, learned());
       const letterCount = [...w.en].filter(c => /[a-z]/i.test(c)).length;
-      assert.ok(s.hidden.length > 0 && s.hidden.length < letterCount);
+      assert.ok(s.hidden.length > 0 && (letterCount === 1 ? s.hidden.length === 1 : s.hidden.length < letterCount));
       assert.ok(s.hidden.every(i => /[a-z]/i.test(s.chars[i])));
       assert.equal(s.chars.join(''), w.en);
       assert.ok(s.bank.some(t => !s.answers.includes(t.letter)));

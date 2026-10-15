@@ -1,18 +1,19 @@
 # Sasha-English
 English words and exercises for Sasha
 
-Published at https://karin4a-lab.github.io/Sasha-English/ (version 8).
+Published at https://karin4a-lab.github.io/Sasha-English/ (version 9).
 
 ## Source files
 
-`index.html` loads `data.js`, `learning-v8.js`, `visuals-v8.js`, `app-v8.js`, and
+`index.html` loads `data-v9.js`, `learning-v9.js`, `visuals-v8.js`, `app-v8.js`, and
 `styles-v8.css`. These versioned filenames prevent mixing old scripts/styles with
 new HTML. `app.js` and `styles.css` are retained for older cached pages; they are
 not the current application. `sw.js` retires the previous cache worker.
 
 ## Adding school words and topics
 
-Edit `data.js` only to add content. The sections, topic buttons, counts, practice
+Edit `data.js` to add content, and regenerate the versioned data snapshot loaded
+by `index.html` in the same commit. `data-v9.js` is the current snapshot. The sections, topic buttons, counts, practice
 questions, letter tasks, progress screen, matching game, and daily lessons are
 generated from `LESSONS`; there is no fixed word count or hardcoded topic menu.
 
@@ -37,6 +38,15 @@ tasks on at least two distinct Moscow dates since the most recent mistake.
 Letter slots remain editable until the explicit "Проверить" button is pressed.
 For short words the bank includes distractors. Duplicate letters are separate
 tokens; spaces, hyphens, and punctuation stay visible.
+
+Version 9 adds exactly the 37 number words and seven distinct personal pronouns
+from the two school photographs (44 additions, 59 total). `you` covers both
+singular and plural forms in one entry. Capitalization is preserved in letter
+tasks: `I` and its letter-bank choices are uppercase. A single-letter word uses
+one blank and distractor letters instead of a typing field. Existing topic IDs,
+word keys, storage keys, and mastery rules are unchanged.
+New words are interleaved across topics; a long number list cannot block the
+pronoun topic from appearing in daily introductions.
 
 The daily lesson prioritizes difficult and overdue words, chooses tasks based on
 missing proof, and normally introduces up to three new words per Moscow day.
