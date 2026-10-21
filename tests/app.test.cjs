@@ -205,3 +205,37 @@ test('backup merging preserves daily attempt limits without summing duplicates',
   const again=fixture({storage:Object.fromEntries(f.storage)});
   assert.equal(again.run("dayMeta().attempts['numbers-1::one']"),6);
 });
+
+test('persistent home button exits a used lesson directly and preserves results and time',()=>{
+  const f=fixture();
+  assert.equal(f.element('#backBtn').classList.contains('hidden'),true);
+  f.click('#startDailyBtn');f.click('#knowBtn');
+  f.run("setMode('quiz',currentWords[0])");
+  const key=f.run('wordKey(quizItem)');
+  solveQuiz(f);f.advance(8);f.click('#backBtn');
+  assert.equal(f.run('currentView'),'home');
+  assert.equal(f.run('session'),null);
+  assert.equal(f.run('dailySeconds()'),8);
+  assert.equal(f.element('#backBtn').classList.contains('hidden'),true);
+  const again=fixture({storage:Object.fromEntries(f.storage)});
+  assert.equal(again.run(`progress[${JSON.stringify(key)}].quizCorrect`),1);
+  assert.equal(again.run('dailySeconds()'),8);
+});
+test('persistent home button works from results, progress, empty lists and each exercise mode',()=>{
+  const f=fixture();
+  for(const mode of ['cards','quiz','build','match']){
+    f.click('#practiceSelected');f.run(`setMode('${mode}')`);
+    assert.equal(f.element('#backBtn').classList.contains('hidden'),false);
+    f.click('#backBtn');assert.equal(f.run('currentView'),'home');
+  }
+  f.click('#startDailyBtn');f.click('#knowBtn');f.click('#finishSessionBtn');
+  assert.equal(f.run('currentView'),'summary');
+  assert.equal(f.element('#backBtn').classList.contains('hidden'),false);
+  f.click('#backBtn');assert.equal(f.run('currentView'),'home');
+  f.click('#openProgressBtn');
+  assert.equal(f.element('#backBtn').classList.contains('hidden'),false);
+  f.click('#backBtn');assert.equal(f.run('currentView'),'home');
+  f.run("selectLibrary('learned');openLibrary()");
+  assert.equal(f.element('#studyContent').classList.contains('hidden'),true);
+  f.click('#backBtn');assert.equal(f.run('currentView'),'home');
+});

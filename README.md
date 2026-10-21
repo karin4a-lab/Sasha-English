@@ -1,12 +1,12 @@
 # Sasha-English
 English words and exercises for Sasha
 
-Published at https://karin4a-lab.github.io/Sasha-English/ (version 11).
+Published at https://karin4a-lab.github.io/Sasha-English/ (version 12).
 
 ## Source files
 
-`index.html` loads `data-v10.js`, `learning-v11.js`, `visuals-v8.js`, `app-v11.js`, and
-`styles-v8.css`. These versioned filenames prevent mixing old scripts/styles with
+`index.html` loads `data-v10.js`, `learning-v11.js`, `visuals-v8.js`, `app-v12.js`, and
+`styles-v12.css`. These versioned filenames prevent mixing old scripts/styles with
 new HTML. `app.js` and `styles.css` are retained for older cached pages; they are
 not the current application. `sw.js` retires the previous cache worker.
 
@@ -86,6 +86,15 @@ keys, leaving old data intact. Export/import merges whole word records by newest
 result timestamp and takes the maximum time per day, rather than adding duplicate
 copies. Backups preserve records for future words; adding vocabulary does not
 erase progress. Storage failures leave practice usable and show a save-copy note.
+
+Version 12 keeps a sticky “На главную” button available in study, results and
+progress. It exits directly to home, preserving already checked answers and time;
+“Завершить занятие” still opens results. On phones (up to 600 CSS pixels), the study
+uses the dynamic viewport height, a compact header, two-column quiz choices,
+smaller card illustrations, and no duplicate illustrations in letter tasks.
+Check/Next actions remain at the bottom of the exercise; unusually small viewports
+or enlarged text retain an internal overflow fallback so content is not clipped.
+The home Today widget, themes and learning/storage rules are unchanged.
 
 ## Verification
 

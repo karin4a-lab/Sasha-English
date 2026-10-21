@@ -4,13 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#ffffff">
-  <meta name="app-version" content="11">
+  <meta name="app-version" content="12">
   <title>Саша • English</title>
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="stylesheet" href="styles-v8.css">
+  <link rel="stylesheet" href="styles-v12.css">
 </head>
 <body>
-<header class="topbar"><div><div class="eyebrow">Саша • English</div><h1>Учим слова</h1></div><div class="streak" id="streak">0 ⭐</div></header>
+<header class="topbar"><div><div class="eyebrow">Саша • English</div><h1>Учим слова</h1></div><div class="streak" id="streak">0 ⭐</div><button class="home-button hidden" id="backBtn">← На главную</button></header>
 <main class="wrap">
   <p id="storageNotice" class="notice hidden" role="status"></p>
   <section id="homeView">
@@ -22,7 +22,6 @@
     <button class="secondary full" id="openProgressBtn">Прогресс и копия</button>
   </section>
   <section id="studyView" class="hidden">
-    <button class="back" id="backBtn">← Назад</button>
     <div class="study-head"><div><div class="eyebrow" id="topicType"></div><h2 id="topicTitle"></h2></div><div class="progress-pill" id="progressPill"></div></div>
     <div class="session-line"><span>Сегодня <strong id="studyDailyTime">00:00 / 10:00</strong></span><button class="text-button" id="timerToggleBtn">Пауза</button></div>
     <p id="timerState" class="timer-state" role="status">Время занятия</p>
@@ -47,14 +46,14 @@
     <div id="studyTools" class="study-tools"><button class="text-button" id="openMatchBtn">Игра «Найди пару»</button><button class="text-button" id="finishSessionBtn">Завершить занятие</button></div>
   </section>
   <section id="summaryView" class="hidden">
-    <div class="empty-state summary-card"><div class="empty-icon">✓</div><h2 id="summaryTitle">Занятие завершено</h2><p id="summaryNote"></p><div id="summaryStats" class="summary-stats"></div><div id="summaryWords" class="summary-words"></div><button class="primary full" id="continueSessionBtn">Продолжить</button><button class="secondary full" id="summaryHomeBtn">К словам</button></div>
+    <div class="empty-state summary-card"><div class="empty-icon">✓</div><h2 id="summaryTitle">Занятие завершено</h2><p id="summaryNote"></p><div id="summaryStats" class="summary-stats"></div><div id="summaryWords" class="summary-words"></div><button class="primary full" id="continueSessionBtn">Продолжить</button><button class="secondary full" id="summaryHomeBtn">На главную</button></div>
   </section>
   <section id="progressView" class="hidden">
-    <button class="back" id="progressBackBtn">← К словам</button><div class="section-head"><h2>Прогресс</h2><span id="progressToday"></span></div>
+    <button class="back" id="progressBackBtn">← На главную</button><div class="section-head"><h2>Прогресс</h2><span id="progressToday"></span></div>
     <p class="small-note">«Выучено»: 2 верных теста и 2 задания с буквами минимум в 2 разных дня после последней ошибки. «Помню», игры и подсказки не дают подтверждений.</p>
     <div id="dayStats" class="day-stats"></div><div id="wordProgressList"></div>
     <div class="backup-card"><h3>Копия прогресса</h3><p class="small-note">Прогресс хранится в этом браузере. Копию можно сохранить и перенести на другой телефон. Новые слова появятся после обновления словаря.</p><button class="primary full" id="exportProgressBtn">Сохранить копию</button><button class="secondary full" id="chooseBackupBtn">Выбрать копию для загрузки</button><input class="hidden" id="backupFile" type="file" accept=".json,application/json"><p id="backupMessage" class="small-note" role="status"></p><button class="primary full hidden" id="importProgressBtn">Загрузить и объединить</button></div>
-    <p class="version-note">Версия 11</p>
+    <p class="version-note">Версия 12</p>
   </section>
 </main>
 <script>
@@ -70,6 +69,6 @@ if ('caches' in window) caches.keys().then(keys => Promise.all(keys.filter(k => 
 <script src="data-v10.js"></script>
 <script src="learning-v11.js"></script>
 <script src="visuals-v8.js"></script>
-<script src="app-v11.js"></script>
+<script src="app-v12.js"></script>
 </body>
 </html>
