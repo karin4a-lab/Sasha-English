@@ -1,11 +1,11 @@
 # Sasha-English
 English words and exercises for Sasha
 
-Published at https://karin4a-lab.github.io/Sasha-English/ (version 10).
+Published at https://karin4a-lab.github.io/Sasha-English/ (version 11).
 
 ## Source files
 
-`index.html` loads `data-v10.js`, `learning-v10.js`, `visuals-v8.js`, `app-v10.js`, and
+`index.html` loads `data-v10.js`, `learning-v11.js`, `visuals-v8.js`, `app-v11.js`, and
 `styles-v8.css`. These versioned filenames prevent mixing old scripts/styles with
 new HTML. `app.js` and `styles.css` are retained for older cached pages; they are
 not the current application. `sw.js` retires the previous cache worker.
@@ -65,9 +65,15 @@ The app caches the Moscow day per minute so a larger dictionary does not format
 the date repeatedly for every word during each progress update.
 
 The daily lesson prioritizes difficult and overdue words, chooses tasks based on
-missing proof, and normally introduces up to three new words per Moscow day.
-With a larger difficult-word backlog it introduces fewer new words. Failed tasks
-return after three intervening tasks, and learned words are scheduled after
+missing proof, and introduces small batches with up to six active words. Once a
+word has two quiz and two letter successes today it rests until another day,
+without being marked learned prematurely. Six attempts per word per Moscow day
+also bound error/hint retries; these counts survive reopening and backups.
+Completed batches make room for more words, rather than repeating the first three
+until the ten-minute timer ends. Already over-practised v10 words rest immediately.
+Failed tasks return after three intervening tasks where the pool allows it.
+When the entire dictionary has finished, the lesson ends even before ten minutes.
+Learned words are scheduled after
 1, 3, 7, and 14 days. Optional early practice does not advance the review interval.
 
 The Today widget and topics remain on the main screen. Time accrues only in a

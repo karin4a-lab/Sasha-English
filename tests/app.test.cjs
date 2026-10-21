@@ -86,21 +86,60 @@ test('devices without speech still have usable text tests',()=>{
   assert.equal(f.run('quizState.kind'),'en-ru');solveQuiz(f);
   f.click('#nextQuizBtn');assert.equal(f.run('quizState.kind'),'ru-en');
 });
-test('daily lesson automatically changes modes and introduces at most three new words per day',()=>{
-  const f=fixture();f.click('#startDailyBtn');
-  const modes=new Set();
-  for(let i=0;i<40;i++){
-    const mode=f.run('currentMode');modes.add(mode);
-    if(mode==='cards')f.click('#knowBtn');
-    if(mode==='quiz'){solveQuiz(f);f.click('#nextQuizBtn');}
-    if(mode==='build'){fillBuild(f);f.click('#checkBuildBtn');f.click('#nextBuildBtn');}
+function finishDailyTask(f, correct = true) {
+  const mode=f.run('currentMode');
+  if(mode==='cards')f.click(correct?'#knowBtn':'#againBtn');
+  if(mode==='quiz'){solveQuiz(f,correct);f.click('#nextQuizBtn');}
+  if(mode==='build'){
+    if(correct)fillBuild(f);
+    else {fillBuild(f);f.run("buildState.hinted=true;renderBuild();");}
+    f.click('#checkBuildBtn');f.click('#nextBuildBtn');
   }
+}
+test('ten-minute daily lesson moves beyond the first three words and rests completed words',()=>{
+  const f=fixture({now:'2026-10-21T12:00:00Z'});f.click('#startDailyBtn');
+  const modes=new Set(), appearances=new Map(), firstMinute=new Set(), thirdMinute=new Set();
+  for(let i=0;i<200;i++){
+    assert.equal(f.run('currentView'),'study');
+    const key=f.run('session.task.key');
+    if(i<20)firstMinute.add(key);
+    if(i>=40&&i<60)thirdMinute.add(key);
+    appearances.set(key,(appearances.get(key)||0)+1);
+    modes.add(f.run('currentMode'));f.advance(3);finishDailyTask(f);
+  }
+  assert.equal(f.run('currentView'),'summary');
+  assert.equal(f.run('dailySeconds()'),600);
   assert.deepEqual([...modes].sort(),['build','cards','quiz']);
-  assert.equal(f.run('dayMeta().introduced.length'),3);
+  assert.ok(appearances.size>=30);
+  assert.ok([...appearances.values()].every(n=>n<=5));
+  assert.ok([...thirdMinute].some(key=>!firstMinute.has(key)));
   assert.equal(f.run('counts().learned'),0);
-  f.run('goHome();startDaily();');
-  assert.equal(f.run('dayMeta().introduced.length'),3);
-  assert.ok(['quiz','build'].includes(f.run('currentMode')));
+  const rested=[...appearances].filter(([,n])=>n===5).map(([key])=>key);
+  const again=fixture({now:'2026-10-21T12:00:00Z',storage:Object.fromEntries(f.storage)});again.click('#startDailyBtn');
+  assert.ok(!rested.includes(again.run('session.task.key')));
+});
+test('existing over-practised one, I and ant are immediately replaced without losing progress',()=>{
+  const f=fixture();
+  f.run("for(const w of allWords().filter(w=>['one','I','ant'].includes(w.en))) {progress[wordKey(w)]={...Learning.baseRec(),seen:true,status:'reinforce',quizCorrect:30,buildCorrect:30,days:[todayKey()],lastReviewDay:todayKey()};introduce(w);}saveProgress();");
+  f.click('#startDailyBtn');
+  for(let i=0;i<35;i++){
+    assert.ok(!['one','I','ant'].includes(f.run('currentWords.find(w=>wordKey(w)===session.task.key).en')));
+    finishDailyTask(f);
+  }
+  assert.equal(f.run("getRec(allWords().find(w=>w.en==='one')).quizCorrect"),30);
+});
+test('six failed or hinted attempts rest a word across reopening and become available tomorrow',()=>{
+  const f=fixture();f.click('#startDailyBtn');
+  const key=f.run('session.task.key');
+  // Seed five prior unsuccessful attempts, then exercise a real sixth quiz failure.
+  f.run(`dayMeta().attempts[session.task.key]=5;setMode('quiz',currentWords.find(w=>wordKey(w)===session.task.key));`);
+  solveQuiz(f,false);f.click('#nextQuizBtn');
+  assert.equal(f.run(`dayMeta().attempts[${JSON.stringify(key)}]`),6);
+  assert.notEqual(f.run('session.task.key'),key);
+  const again=fixture({storage:Object.fromEntries(f.storage)});again.click('#startDailyBtn');
+  for(let i=0;i<20;i++){assert.notEqual(again.run('session.task.key'),key);finishDailyTask(again);}
+  again.jump(86400000);again.run('goHome();startDaily();');
+  assert.equal(again.run(`Learning.dailyAvailable(allWords().find(w=>wordKey(w)===${JSON.stringify(key)}),progress,todayKey(),dayMeta().attempts)`),true);
 });
 test('daily errors return only after three other tasks',()=>{
   const f=fixture();f.click('#startDailyBtn');
@@ -141,4 +180,28 @@ test('saved progress reloads and storage failures do not break the buttons',()=>
   const blocked=fixture({blocked:true});blocked.click('#startDailyBtn');
   assert.equal(blocked.run('currentView'),'study');
   assert.equal(blocked.element('#storageNotice').classList.contains('hidden'),false);
+});
+
+test('small exhausted dictionary ends instead of looping to fill ten minutes',()=>{
+  const f=fixture();f.run("LESSONS.splice(0,LESSONS.length,{id:'tiny',title:'Маленькая тема',words:[{en:'one',ru:'один'},{en:'I',ru:'я'},{en:'ant',ru:'муравей'}]});renderHome();");
+  f.click('#startDailyBtn');
+  let tasks=0;
+  while(f.run('currentView')==='study'&&tasks<50){finishDailyTask(f);tasks++;}
+  assert.equal(tasks,15);
+  assert.equal(f.run('currentView'),'summary');
+  assert.equal(f.run('counts().learned'),0);
+});
+test('persistent mistakes and hints cannot trap the daily lesson on three words',()=>{
+  const f=fixture();f.click('#startDailyBtn');
+  const keys=new Set();
+  for(let i=0;i<100;i++){keys.add(f.run('session.task.key'));f.advance(3);finishDailyTask(f,false);}
+  assert.ok(keys.size>=12);
+  assert.ok(f.run('Object.values(dayMeta().attempts).every(n=>n<=6)'));
+});
+test('backup merging preserves daily attempt limits without summing duplicates',()=>{
+  const f=fixture();
+  f.run("dayMeta().attempts['numbers-1::one']=4;pendingBackup={format:'sasha-english-progress',version:4,progress:{},daily:{},meta:{[todayKey()]:{attempts:{'numbers-1::one':6},introduced:[],touched:[]}}};importProgress();");
+  assert.equal(f.run("dayMeta().attempts['numbers-1::one']"),6);
+  const again=fixture({storage:Object.fromEntries(f.storage)});
+  assert.equal(again.run("dayMeta().attempts['numbers-1::one']"),6);
 });

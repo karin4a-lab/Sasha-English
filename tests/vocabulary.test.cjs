@@ -36,6 +36,6 @@ test('new number and pronoun topics participate in every practice mode',()=>{
   }
   assert.equal(f.run('counts().learned'),0);
   const topics=JSON.parse(f.run("JSON.stringify(Learning.createPlan(allWords().filter(w=>['numbers-1','personal-pronouns-1'].includes(w.lessonId)),progress,todayKey(),[]).tasks.filter(t=>t.mode==='cards').map(t=>allWords().find(w=>wordKey(w)===t.key).lessonId))"));
-  assert.equal(topics.length,3);
+  assert.equal(topics.length,6);
   assert.equal(new Set(topics).size,2);
 });

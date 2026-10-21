@@ -119,15 +119,15 @@ test('duplicate letters are separate tokens and hints preserve already correct s
   assert.equal(L.hint(s), true);
   assert.equal(L.buildCorrect(s), true);
 });
-test('daily plan limits new words, includes overdue learned words and picks missing skills', () => {
+test('daily plan fills six active places, includes overdue words and picks missing skills', () => {
   const p = Object.create(null), w = words[0];
   p[L.wordKey(w)] = {status:'reinforce',quizCorrect:2,buildCorrect:0,days:[day],seen:true};
-  p[L.wordKey(words[1])] = {...learned(),nextReview:day};
+  p[L.wordKey(words[1])] = {...learned(),days:['2026-10-09','2026-10-10'],lastReviewDay:'2026-10-10',nextReview:day};
   const plan = L.createPlan(words,p,day,[]);
-  assert.equal(plan.newCount,3);
+  assert.equal(plan.newCount,4);
   assert.equal(plan.tasks.find(t=>t.key===L.wordKey(w)).mode,'build');
   assert.ok(plan.tasks.some(t=>t.key===L.wordKey(words[1])));
-  assert.equal(L.createPlan(words,p,day,['a','b','c']).newCount,0);
+  assert.equal(L.createPlan(words,p,day,['a','b','c']).newCount,4);
   for (const w of words.slice(0,12)) p[L.wordKey(w)] = {status:'reinforce',wrong:1};
   assert.equal(L.createPlan(words,p,day,[]).newCount,0);
 });
@@ -151,4 +151,14 @@ test('backup merge keeps newer failures and does not double count daily time', (
   assert.equal(merged.daily[day],360);
   assert.throws(()=>L.mergeBackup({progress:{},daily:{}},{progress:{},daily:{}},day));
   assert.deepEqual(Object.keys(L.normalizeDaily({'bad-date':500,'2026-02-31':500})),[]);
+});
+
+test('completed first-day words rest without prematurely becoming learned', () => {
+  const w=words[0], key=L.wordKey(w); let r=L.baseRec();
+  for (const mode of ['quiz','build','quiz','build']) r=L.result(r,mode,true,day,1);
+  assert.equal(r.status,'reinforce');
+  assert.equal(L.dailyAvailable(w,{[key]:r},day),false);
+  assert.equal(L.dailyAvailable(w,{[key]:r},'2026-10-12'),true);
+  assert.equal(L.createPlan([w],{[key]:r},day,[key]).tasks.length,0);
+  assert.equal(L.dailyAvailable(w,{},day,{[key]:6}),false);
 });
